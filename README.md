@@ -15,8 +15,13 @@ An output file will be like this:
 
     00:22
     But every two subsequent Enters will result in a new timestamp insertion.
+    
+    00:34
+    You can close this file and open it again: just run the launching command, 
+    and the plugin will obtain start time from the first line.
 
 Tested with Sublime Text 3.
+
 
 How to install and use
 ======================
