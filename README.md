@@ -7,7 +7,8 @@ An output file will be like this:
     Triplog: starting new trip at 03.07.2013 19:03
 
     00:00
-    Start writing an example for TripLog
+    First minute of example for TripLog.
+    Press Enter two times to start a new paragraph.
 
     00:06
     Six minutes are already over.
@@ -18,7 +19,7 @@ An output file will be like this:
     
     00:34
     You can close this file and open it again: just run the launching command, 
-    and the plugin will obtain start time from the first line.
+    and the plugin will restore the start time from the first line.
 
 Tested with Sublime Text 3.
 
