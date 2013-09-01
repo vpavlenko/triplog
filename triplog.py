@@ -1,9 +1,14 @@
 import datetime
 
-import sublime, sublime_plugin
+import sublime
+import sublime_plugin
 
 
 GREETING = 'Triplog: starting new trip at '
+SURVEY = '''Dose: 
+Age: 
+Body weight: 
+'''
 START_TIME_FORMAT = '%d.%m.%Y %H:%M'
 TRIP_START_TIME = {}
 MODIFIED_NOW = set()
@@ -12,7 +17,7 @@ MODIFIED_NOW = set()
 def formatted_trip_time(trip_id):
     td = datetime.datetime.now() - TRIP_START_TIME[trip_id]
     days, hours, minutes = td.days, td.seconds // 3600, td.seconds // 60 % 60
-    return "{0:02d}:{1:02d}".format(hours, minutes)
+    return "T+{0:d}:{1:02d}".format(hours, minutes)
 
 
 class IntoTripCommand(sublime_plugin.TextCommand):
@@ -29,9 +34,11 @@ class IntoTripCommand(sublime_plugin.TextCommand):
 
     def start_trip(self, edit):
         TRIP_START_TIME[self.view.buffer_id()] = datetime.datetime.now()
-        self.view.insert(edit, 0, '{0}{1}\n\n'.format(
+        self.view.insert(edit, 0, '{0}{1}\n{2}\n\n'.format(
             GREETING,
-            TRIP_START_TIME[self.view.buffer_id()].strftime(START_TIME_FORMAT)))
+            TRIP_START_TIME[self.view.buffer_id()].strftime(START_TIME_FORMAT),
+            SURVEY
+        ))
 
 
 class AddTimeStampCommand(sublime_plugin.TextCommand):
@@ -40,15 +47,15 @@ class AddTimeStampCommand(sublime_plugin.TextCommand):
         last_line = self.view.substr(self.view.line(point))
         nearly_last_line = self.view.substr(self.view.line(point - 1))
         if not last_line and not nearly_last_line:
-            self.view.insert(edit, point, "{0}\n".format(formatted_trip_time(self.view.buffer_id())))
- 
+            self.view.insert(edit, point, "{0} ".format(formatted_trip_time(self.view.buffer_id())))
+
 
 class TripEnterListener(sublime_plugin.EventListener):
     def on_modified(self, view):
         if not view.buffer_id() in TRIP_START_TIME or view.buffer_id() in MODIFIED_NOW:
             return
 
-        self.add_time_stamp(view)    
+        self.add_time_stamp(view)
 
     def add_time_stamp(self, view):
         MODIFIED_NOW.add(view.buffer_id())

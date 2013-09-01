@@ -27,6 +27,6 @@ Tested with Sublime Text 3.
 How to install and use
 ======================
 
-1. Copy `triplog.py` to `Packages/User directory`.
+1. Copy `triplog.py` to `Packages/User` directory.
 2. To create or resume trip session in some file, press ``Ctrl+` ``, then type 
     `view.run_command("into_trip")`
